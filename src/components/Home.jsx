@@ -1,6 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import NewsletterSubscribe from './NewsletterSubscribe';
+import ScrollToTop from './ScrollToTop';
+import LoadingSpinner from './LoadingSpinner';
+import FeaturedCarousel from './FeaturedCarousel';
 
 const Home = () => {
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        setIsLoaded(true);
+    }, []);
+
     const products = [
         {
             id: 1,
@@ -35,64 +46,453 @@ const Home = () => {
             image: "https://img.odcdn.com.br/wp-content/uploads/2024/09/iphone-16-cores-1920x1080.jpg",
         },
         {
-            id: 5, // Corrected ID
-            title: "Product 5", // Corrected title
-            description: "This is a sample description for the fifth product.", // Corrected description
-            price: "$18.99 - $48.99", // Corrected price
-            rating: "4.1", // Corrected rating
-            image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff", // Example image
+            id: 5,
+            title: "Product 5",
+            description: "This is a sample description for the fifth product.",
+            price: "$18.99 - $48.99",
+            rating: "4.1",
+            image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
         },
         {
-            id: 6, // Corrected ID
-            title: "Product 6", // Corrected title
-            description: "This is a sample description for the sixth product.", // Corrected description
-            price: "$22.99 - $52.99", // Corrected price
-            rating: "4.3", // Corrected rating
-            image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f", // Example image
+            id: 6,
+            title: "Product 6",
+            description: "This is a sample description for the sixth product.",
+            price: "$22.99 - $52.99",
+            rating: "4.3",
+            image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f",
         },
     ];
-    return (
-        <div className="bg-gray-100 min-h-screen">
-            {/* Hero Section */}
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-20 px-4 text-center">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to Our E-Store!</h1>
-                <p className="text-lg md:text-xl mb-8">Discover amazing products at unbeatable prices.</p>
-                <button className="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-200 transition duration-300">
-                    Shop Now
-                </button>
-            </div>
 
-            {/* Featured Products Section */}
-            <div className="container mx-auto py-12 px-4">
-                <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">Featured Products</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                    {products.map((product) => (
-                        <div
-                            key={product.id}
-                            className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out flex flex-col"
+    // Animation variants
+    const fadeIn = {
+        hidden: { opacity: 0 },
+        visible: { opacity: 1, transition: { duration: 0.6 } }
+    };
+
+    const heroVariants = {
+        hidden: { opacity: 0, y: -50 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                type: "spring",
+                stiffness: 100,
+                damping: 15,
+                duration: 0.7
+            }
+        }
+    };
+
+    const buttonVariants = {
+        hover: {
+            scale: 1.05,
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 10
+            }
+        },
+        tap: { scale: 0.95 }
+    };
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { type: "spring", stiffness: 100, damping: 10 }
+        },
+        hover: {
+            y: -5,
+            transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 10
+            }
+        }
+    }; return (
+        <>
+            {!isLoaded && <LoadingSpinner />}
+            <motion.div
+                className="bg-gray-100 min-h-screen"
+                initial="hidden"
+                animate={isLoaded ? "visible" : "hidden"}
+                variants={fadeIn}
+            >
+                {/* Hero Section with Animation */}
+                <motion.div
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 text-white py-20 px-4 text-center relative overflow-hidden"
+                    variants={heroVariants}
+                >
+                    <motion.div
+                        className="absolute inset-0"
+                        animate={{
+                            backgroundPosition: ["0% 0%", "100% 100%"],
+                            opacity: [0.5, 0.7, 0.5]
+                        }}
+                        transition={{
+                            duration: 15,
+                            repeat: Infinity,
+                            repeatType: "reverse"
+                        }}
+                        style={{
+                            backgroundImage: "url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')",
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                            filter: "blur(8px)",
+                            opacity: 0.3,
+                            mixBlendMode: "overlay"
+                        }}
+                    />
+                    <div className="relative z-10">
+                        <motion.h1
+                            className="text-4xl md:text-5xl font-bold mb-4"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7, delay: 0.2 }}
                         >
-                            <img className="w-full h-56 object-cover" src={product.image} alt={product.title} />
-                            <div className="p-6 flex flex-col flex-grow">
-                                <h3 className="font-bold text-xl mb-2 text-gray-800">{product.title}</h3>
-                                <p className="text-gray-600 text-sm mb-4 flex-grow">{product.description}</p>
-                                <div className="flex items-center justify-between mb-4">
-                                    <span className="text-xl font-bold text-blue-600">{product.price}</span>
-                                    <span className="text-yellow-500 text-sm flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                        {product.rating}/5
-                                    </span>
-                                </div>
-                                <button className="mt-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full transition duration-300 ease-in-out">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+                            Welcome to Our E-Store!
+                        </motion.h1>
+                        <motion.p
+                            className="text-lg md:text-xl mb-8"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7, delay: 0.4 }}
+                        >
+                            Discover amazing products at unbeatable prices.
+                        </motion.p>
+                        <motion.button
+                            className="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-200"
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7, delay: 0.6 }}
+                        >
+                            Shop Now
+                        </motion.button>
+                    </div>
+                </motion.div>            {/* Banner with Animation */}
+                <motion.div
+                    className="bg-amber-100 py-4 text-center"
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                >
+                    <div className="container mx-auto">
+                        <motion.p
+                            className="text-amber-800 font-semibold"
+                            animate={{ scale: [1, 1.03, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                        >
+                            🔥 Limited Time Offer: Free Shipping on Orders Over $50! 🔥
+                        </motion.p>
+                    </div>
+                </motion.div>
+
+                {/* Featured Carousel */}
+                <div className="container mx-auto py-12 px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                    >
+                        <FeaturedCarousel />
+                    </motion.div>
                 </div>
-            </div>
-        </div>
+
+                {/* Featured Products Section */}
+                <div className="container mx-auto py-12 px-4">
+                    <motion.h2
+                        className="text-3xl font-bold text-center mb-10 text-gray-800"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.7, delay: 0.2 }}
+                    >
+                        Featured Products
+                    </motion.h2>
+
+                    {/* Products Grid with Staggered Animation */}
+                    <motion.div
+                        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+                        variants={containerVariants}
+                    >
+                        {products.map((product) => (
+                            <motion.div
+                                key={product.id}
+                                className="bg-white rounded-lg overflow-hidden shadow-lg flex flex-col relative"
+                                variants={itemVariants}
+                                whileHover="hover"
+                                layout
+                            >
+                                <div className="relative overflow-hidden">
+                                    <motion.img
+                                        className="w-full h-56 object-cover"
+                                        src={product.image}
+                                        alt={product.title}
+                                        whileHover={{ scale: 1.1 }}
+                                        transition={{ duration: 0.3 }}
+                                    />
+                                    <motion.div
+                                        className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full"
+                                        initial={{ opacity: 0, scale: 0 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: 0.5 + product.id * 0.1 }}
+                                    >
+                                        HOT
+                                    </motion.div>
+                                </div>
+                                <div className="p-6 flex flex-col flex-grow">
+                                    <h3 className="font-bold text-xl mb-2 text-gray-800">{product.title}</h3>
+                                    <p className="text-gray-600 text-sm mb-4 flex-grow">{product.description}</p>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <span className="text-xl font-bold text-blue-600">{product.price}</span>
+                                        <span className="text-yellow-500 text-sm flex items-center">
+                                            <motion.svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className="h-5 w-5 mr-1"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                animate={{
+                                                    rotate: [0, 5, 0, -5, 0],
+                                                    scale: [1, 1.2, 1, 1.2, 1],
+                                                }}
+                                                transition={{
+                                                    duration: 1.5,
+                                                    repeat: Infinity,
+                                                    repeatDelay: 3
+                                                }}
+                                            >
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </motion.svg>
+                                            {product.rating}/5
+                                        </span>
+                                    </div>
+                                    <motion.button
+                                        className="mt-auto bg-blue-500 text-white font-bold py-2 px-4 rounded w-full"
+                                        whileHover={{
+                                            backgroundColor: "#2563eb", // blue-600
+                                            scale: 1.02
+                                        }}
+                                        whileTap={{ scale: 0.95 }}
+                                        transition={{ duration: 0.2 }}
+                                    >
+                                        Add to Cart
+                                    </motion.button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </div>
+
+                {/* Features Section */}
+                <motion.div
+                    className="bg-white py-16"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.7 }}
+                    viewport={{ once: true }}
+                >
+                    <div className="container mx-auto px-4">
+                        <motion.h2
+                            className="text-3xl font-bold text-center mb-12 text-gray-800"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7 }}
+                            viewport={{ once: true }}
+                        >
+                            Why Choose Us
+                        </motion.h2>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    icon: "🚚",
+                                    title: "Fast Delivery",
+                                    description: "Free delivery for all orders over $50"
+                                },
+                                {
+                                    icon: "🔄",
+                                    title: "Easy Returns",
+                                    description: "30 days money back guarantee"
+                                },
+                                {
+                                    icon: "🔒",
+                                    title: "Secure Payment",
+                                    description: "Multiple secure payment methods"
+                                }
+                            ].map((feature, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="bg-gray-50 p-6 rounded-lg text-center"
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                                    viewport={{ once: true }}
+                                    whileHover={{ scale: 1.03 }}
+                                >
+                                    <motion.div
+                                        className="text-4xl mb-4 inline-block"
+                                        animate={{
+                                            rotate: index === 1 ? [0, 360] : [0, 0],
+                                            y: index !== 1 ? [0, -10, 0] : [0, 0]
+                                        }}
+                                        transition={{
+                                            duration: 1.5,
+                                            repeat: Infinity,
+                                            repeatDelay: 1
+                                        }}
+                                    >
+                                        {feature.icon}
+                                    </motion.div>
+                                    <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                                    <p className="text-gray-600">{feature.description}</p>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Testimonials Section with Animation */}
+                <motion.div
+                    className="bg-gray-100 py-16"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.7 }}
+                    viewport={{ once: true }}
+                >
+                    <div className="container mx-auto px-4">
+                        <motion.h2
+                            className="text-3xl font-bold text-center mb-12 text-gray-800"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7 }}
+                            viewport={{ once: true }}
+                        >
+                            What Our Customers Say
+                        </motion.h2>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {[
+                                {
+                                    text: "I love shopping here! The products are high quality and the delivery is always on time.",
+                                    author: "Sarah J.",
+                                    rating: 5
+                                },
+                                {
+                                    text: "Great customer service and easy returns policy. Will definitely shop again!",
+                                    author: "Mike T.",
+                                    rating: 4
+                                },
+                                {
+                                    text: "The best online shopping experience I've had in years. Highly recommended!",
+                                    author: "Emma R.",
+                                    rating: 5
+                                }
+                            ].map((testimonial, index) => (
+                                <motion.div
+                                    key={index}
+                                    className="bg-white p-6 rounded-lg shadow-lg"
+                                    initial={{ opacity: 0, y: 50, rotateY: 30 }}
+                                    whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
+                                    transition={{ duration: 0.7, delay: index * 0.2 }}
+                                    viewport={{ once: true }}
+                                    whileHover={{
+                                        y: -10,
+                                        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                                    }}
+                                >
+                                    <div className="mb-4 flex">
+                                        {[...Array(5)].map((_, i) => (
+                                            <motion.svg
+                                                key={i}
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                className={`h-5 w-5 ${i < testimonial.rating ? "text-yellow-400" : "text-gray-300"}`}
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                initial={{ opacity: 0, scale: 0 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                transition={{ delay: 0.7 + (index * 0.2) + (i * 0.1) }}
+                                            >
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                            </motion.svg>
+                                        ))}
+                                    </div>
+                                    <motion.p
+                                        className="text-gray-600 italic mb-4"
+                                        initial={{ opacity: 0 }}
+                                        whileInView={{ opacity: 1 }}
+                                        transition={{ duration: 0.7, delay: 0.5 + (index * 0.2) }}
+                                        viewport={{ once: true }}
+                                    >
+                                        "{testimonial.text}"
+                                    </motion.p>
+                                    <p className="text-gray-800 font-semibold">{testimonial.author}</p>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Call to Action with Animation */}
+                <motion.div
+                    className="bg-blue-600 text-white py-14"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 0.7 }}
+                    viewport={{ once: true }}
+                >
+                    <div className="container mx-auto px-4 text-center">
+                        <motion.h2
+                            className="text-3xl font-bold mb-6"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7 }}
+                            viewport={{ once: true }}
+                        >
+                            Ready to Start Shopping?
+                        </motion.h2>
+                        <motion.p
+                            className="text-lg mb-8 max-w-2xl mx-auto"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7, delay: 0.2 }}
+                            viewport={{ once: true }}
+                        >
+                            Join thousands of satisfied customers and discover our amazing products today.
+                        </motion.p>
+                        <motion.button
+                            className="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg"
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.7, delay: 0.4 }}
+                            viewport={{ once: true }}
+                        >
+                            Browse All Products
+                        </motion.button>
+                    </div>
+                </motion.div>
+                {/* Newsletter Subscription */}
+                <NewsletterSubscribe />
+
+                {/* Scroll To Top Button */}            <ScrollToTop />
+            </motion.div>
+        </>
     );
 };
 
