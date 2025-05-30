@@ -48,9 +48,7 @@ const Dashboard = () => {
         weekly: 14950,
         monthly: 58200,
         total: 847650
-    });
-
-    // Simulate loading data
+    });    // Simulate loading data
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsLoading(false);
@@ -65,8 +63,8 @@ const Dashboard = () => {
             {
                 label: 'Revenue',
                 data: [3800, 4200, 3950, 5100, 4800, 6200, 5700],
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderColor: '#1f2937',
+                backgroundColor: 'rgba(31, 41, 55, 0.05)',
                 tension: 0.4,
                 fill: true
             }
@@ -79,8 +77,8 @@ const Dashboard = () => {
             {
                 label: 'Orders',
                 data: [24, 32, 27, 35, 28, 48, 42],
-                backgroundColor: '#3b82f6',
-                borderRadius: 6,
+                backgroundColor: '#1f2937',
+                borderRadius: 0,
                 maxBarThickness: 25
             }
         ]
@@ -92,11 +90,11 @@ const Dashboard = () => {
             {
                 data: [35, 25, 18, 12, 10],
                 backgroundColor: [
-                    '#3b82f6', // blue
-                    '#10b981', // green
-                    '#f59e0b', // amber
-                    '#8b5cf6', // purple
-                    '#ef4444'  // red
+                    '#1f2937', // gray-900
+                    '#4b5563', // gray-600
+                    '#6b7280', // gray-500
+                    '#9ca3af', // gray-400
+                    '#d1d5db'  // gray-300
                 ],
                 borderWidth: 0
             }
@@ -119,13 +117,11 @@ const Dashboard = () => {
         { id: 3, name: 'Designer Handbag', sold: 143, revenue: 28596, inventory: 37 },
         { id: 4, name: 'Running Shoes', sold: 132, revenue: 11878, inventory: 64 },
         { id: 5, name: 'Coffee Maker', sold: 97, revenue: 11640, inventory: 29 }
-    ];
-
-    // Get status color
+    ];    // Get status color
     const getStatusColor = (status) => {
         switch (status) {
             case 'Delivered': return 'bg-green-100 text-green-800';
-            case 'Processing': return 'bg-blue-100 text-blue-800';
+            case 'Processing': return 'bg-gray-100 text-gray-800';
             case 'Shipped': return 'bg-amber-100 text-amber-800';
             case 'Cancelled': return 'bg-red-100 text-red-800';
             default: return 'bg-gray-100 text-gray-800';
@@ -135,14 +131,13 @@ const Dashboard = () => {
     // Get notification icon
     const getNotificationIcon = (type) => {
         switch (type) {
-            case 'order':
-                return (
-                    <div className="p-2 rounded-full bg-blue-100 text-blue-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
-                    </div>
-                );
+            case 'order': return (
+                <div className="p-2 rounded-full bg-gray-100 text-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                </div>
+            );
             case 'inventory':
                 return (
                     <div className="p-2 rounded-full bg-amber-100 text-amber-600">
@@ -202,17 +197,16 @@ const Dashboard = () => {
                                 )}
                             </button>
                         </div>
-                        <div>
-                            <select
-                                className="bg-white p-2.5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
-                                value={timeRange}
-                                onChange={(e) => setTimeRange(e.target.value)}
-                            >
-                                <option value="today">Today</option>
-                                <option value="week">This Week</option>
-                                <option value="month">This Month</option>
-                                <option value="year">This Year</option>
-                            </select>
+                        <div>                            <select
+                            className="bg-white p-2.5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all outline-none focus:ring-2 focus:ring-gray-900 text-gray-700 w-full"
+                            value={timeRange}
+                            onChange={(e) => setTimeRange(e.target.value)}
+                        >
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
                         </div>
                     </div>
                 </div>
@@ -315,33 +309,32 @@ const Dashboard = () => {
                 {/* Tabs */}
                 <div className="mb-8">
                     <div className="border-b border-gray-200">
-                        <nav className="flex -mb-px overflow-x-auto scrollbar-hide">
+                        <nav className="flex -mb-px overflow-x-auto scrollbar-hide">                            <button
+                            className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'overview' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                            onClick={() => setActiveTab('overview')}
+                        >
+                            Overview
+                        </button>
                             <button
-                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'overview' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
-                                onClick={() => setActiveTab('overview')}
-                            >
-                                Overview
-                            </button>
-                            <button
-                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'analytics' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'analytics' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
                                 onClick={() => setActiveTab('analytics')}
                             >
                                 Analytics
                             </button>
                             <button
-                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'orders' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'orders' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
                                 onClick={() => setActiveTab('orders')}
                             >
                                 Orders
                             </button>
                             <button
-                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'products' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'products' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
                                 onClick={() => setActiveTab('products')}
                             >
                                 Products
                             </button>
                             <button
-                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'customers' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+                                className={`mr-6 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === 'customers' ? 'border-gray-900 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
                                 onClick={() => setActiveTab('customers')}
                             >
                                 Customers

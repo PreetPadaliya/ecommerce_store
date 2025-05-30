@@ -4,10 +4,11 @@ import NewsletterSubscribe from './NewsletterSubscribe';
 import ScrollToTop from './ScrollToTop';
 import LoadingSpinner from './LoadingSpinner';
 import FeaturedCarousel from './FeaturedCarousel';
-import CursorTrail from './CursorTrail';
+import { useCart } from '../context/CartContext';
 
 const Home = () => {
     const [isLoaded, setIsLoaded] = useState(false);
+    const { addItem } = useCart();
 
     useEffect(() => {
         setIsLoaded(true);
@@ -123,14 +124,13 @@ const Home = () => {
             }
         }
     }; return (
-        <>
-            {!isLoaded && <LoadingSpinner />}
+        <>            {!isLoaded && <LoadingSpinner />}
             <motion.div
-                className="bg-gray-100 min-h-screen"
+                className="bg-gray-50 min-h-screen"
                 initial="hidden"
                 animate={isLoaded ? "visible" : "hidden"}
                 variants={fadeIn}
-            >                {/* Hero Section with Animation */}
+            >{/* Hero Section with Animation */}
                 <motion.div
                     className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-20 px-4 text-center relative overflow-hidden"
                     variants={heroVariants}
@@ -268,11 +268,16 @@ const Home = () => {
                                             </motion.svg>
                                             {product.rating}
                                         </span>
-                                    </div>
-                                    <motion.button
+                                    </div>                                    <motion.button
                                         className="mt-auto bg-gray-900 hover:bg-gray-800 text-white font-medium py-2 px-4 w-full transition duration-300"
                                         whileTap={{ scale: 0.98 }}
                                         transition={{ duration: 0.2 }}
+                                        onClick={() => addItem({
+                                            id: product.id,
+                                            title: product.title,
+                                            price: parseFloat(product.price ? product.price.split(' ')[0].replace('$', '') : 19.99),
+                                            image: product.image
+                                        })}
                                     >
                                         Add to Cart
                                     </motion.button>
@@ -428,37 +433,35 @@ const Home = () => {
                             ))}
                         </div>
                     </div>
-                </motion.div>
-
-                {/* Call to Action with Animation */}
+                </motion.div>                {/* Call to Action with Animation */}
                 <motion.div
-                    className="bg-blue-600 text-white py-14"
+                    className="bg-gray-900 text-white py-16"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.7 }}
                     viewport={{ once: true }}
                 >
-                    <div className="container mx-auto px-4 text-center">
+                    <div className="container mx-auto px-4 text-center max-w-4xl">
                         <motion.h2
-                            className="text-3xl font-bold mb-6"
+                            className="text-3xl font-semibold mb-6 tracking-wide"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7 }}
                             viewport={{ once: true }}
                         >
-                            Ready to Start Shopping?
+                            Experience Premium Quality
                         </motion.h2>
                         <motion.p
-                            className="text-lg mb-8 max-w-2xl mx-auto"
+                            className="text-lg mb-8 max-w-2xl mx-auto text-gray-300 font-light"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.7, delay: 0.2 }}
                             viewport={{ once: true }}
                         >
-                            Join thousands of satisfied customers and discover our amazing products today.
+                            Join our exclusive clientele and discover why industry professionals trust our selection for reliability, quality, and exceptional service.
                         </motion.p>
                         <motion.button
-                            className="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg"
+                            className="bg-white text-gray-900 font-medium py-3 px-8 border border-white hover:bg-transparent hover:text-white transition-all duration-300"
                             variants={buttonVariants}
                             whileHover="hover"
                             whileTap="tap"
@@ -467,7 +470,7 @@ const Home = () => {
                             transition={{ duration: 0.7, delay: 0.4 }}
                             viewport={{ once: true }}
                         >
-                            Browse All Products
+                            View Collection
                         </motion.button>
                     </div>
                 </motion.div>
