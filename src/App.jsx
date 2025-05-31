@@ -1,4 +1,4 @@
-import Navbar from "./components/Navbar"
+import Navbar from "./components/navbar"
 import Dashboard from "./components/Dashboard"
 import Products from "./components/Products"
 import { Routes, Route, BrowserRouter } from "react-router-dom"
